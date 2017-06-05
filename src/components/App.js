@@ -1,16 +1,19 @@
 import React from 'react';
 import Header from './Header';
 import Search from './Search';
+import Post from './Post';
 import Footer from './Footer';
 import 'whatwg-fetch';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
+      filterText: '',
       posts: []
     };
+
+    this.handleFilterTextInput = this.handleFilterTextInput.bind(this);
   }
 
   componentDidMount() {
@@ -22,19 +25,26 @@ class App extends React.Component {
       });
   }
 
+  handleFilterTextInput(filterText) {
+    this.setState({
+      filterText: filterText
+    });
+  }
+
   render() {
+    let filteredPosts = this.state.posts.filter(post => {
+        return post.body.indexOf(this.state.filterText) !== -1;
+    });
+
     return (
       <div className="container">
         <Header title="React Pet Project #1" />
-        <Search />
+        <Search onFilterTextInput={this.handleFilterTextInput.bind(this)} filterText={this.state.filterText} />
         <div className="row">
           <div className="col-xs-12">
-            <h2>Posts</h2>
-            <ul>
-              {this.state.posts.map(post =>
-                <li key={post.id}>{post.body}</li>
-              )}
-            </ul>
+            {filteredPosts.map(post =>
+              <Post key={post.id} title={post.title} body={post.body} />
+            )}
           </div>
         </div>
         <Footer />
