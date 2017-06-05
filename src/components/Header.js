@@ -3,8 +3,12 @@ import React, {PropTypes} from 'react';
 class Header extends React.Component {
   render() {
     return (
-      <header>
-        <h1>{this.props.title}</h1>
+      <header id="header">
+        <div className="row">
+          <div className="col-xs-12">
+            <h1>{this.props.title}</h1>
+          </div>
+        </div>
       </header>
     );
   }
