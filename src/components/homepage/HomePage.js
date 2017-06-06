@@ -33,7 +33,7 @@ class HomePage extends React.Component {
 
   render() {
     let filteredPosts = this.state.posts.filter(post => {
-        return post.body.indexOf(this.state.filterText) !== -1;
+        return post.body.indexOf(this.state.filterText) !== -1 || post.title.indexOf(this.state.filterText) !== -1;
     });
 
     return (
