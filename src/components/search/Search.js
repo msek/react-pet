@@ -33,7 +33,8 @@ class Search extends React.Component {
 }
 
 Search.propTypes = {
-  filterText: PropTypes.string
+  filterText: PropTypes.string,
+  onFilterTextInput: PropTypes.func
 };
 
 export default Search;

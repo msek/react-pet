@@ -1,11 +1,11 @@
 import React from 'react';
-import Header from './Header';
-import Search from './Search';
-import Post from './Post';
-import Footer from './Footer';
+import Header from '../header/Header';
+import Search from '../search/Search';
+import Post from '../post/Post';
+import Footer from '../footer/Footer';
 import 'whatwg-fetch';
 
-class App extends React.Component {
+class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,7 +43,7 @@ class App extends React.Component {
         <div className="row">
           <div className="col-xs-12">
             {filteredPosts.map(post =>
-              <Post key={post.id} title={post.title} body={post.body} />
+              <Post key={post.id} id={post.id} title={post.title} body={post.body} />
             )}
           </div>
         </div>
@@ -53,4 +53,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default HomePage;
