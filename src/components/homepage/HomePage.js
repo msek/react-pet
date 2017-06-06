@@ -20,7 +20,7 @@ class HomePage extends React.Component {
     fetch(`http://jsonplaceholder.typicode.com/posts`)
       .then(res => res.json())
       .then(responseJSON => {
-        const posts = responseJSON.map(item => item);
+        const posts = responseJSON;
         this.setState({ posts });
       });
   }
