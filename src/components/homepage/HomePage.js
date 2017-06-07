@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Header from '../header/Header';
 import Search from '../search/Search';
-import Post from '../post/Post';
+import PostList from '../postlist/PostList';
 import Footer from '../footer/Footer';
 import 'whatwg-fetch';
 

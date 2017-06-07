@@ -22,10 +22,24 @@ class PostPage extends React.Component {
   render() {
     return (
       <div className="container">
-        <Header title="React Pet Project #1" />
+        <Header title="React Pet Project" />
         <div className="row">
           <div className="col-xs-12">
-            Editing post no. {this.props.params.postId}
+            <h3>Edit / Insert Post #{this.props.params.postId}</h3>
+            <form action="">
+              <div className="form-group">
+                <input type="text"
+                       className="form-control"
+                       id="postTitle"
+                       value={this.state.post.title}
+                />
+              </div>
+              <div className="form-group">
+                <textarea className="form-control"
+                          rows="6"
+                value={this.state.post.body} />
+              </div>
+            </form>
           </div>
         </div>
         <Footer />
