@@ -1,15 +1,13 @@
-import React, {PropTypes} from 'react';
+import React, {PropTypes, Component} from 'react';
 
-class Logo extends React.Component {
+export default class Logo extends Component {
+  static propTypes = {
+    imageSrc: PropTypes.string
+  };
+
   render() {
     return (
       <img className="logo" src={this.props.imageSrc} width="100" height="100" alt="Logo"/>
     );
   }
 }
-
-Logo.propTypes = {
-  imageSrc: PropTypes.string
-};
-
-export default Logo;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Header from '../header/Header';
 import Search from '../search/Search';
 import Post from '../post/Post';
@@ -7,7 +7,7 @@ import 'whatwg-fetch';
 
 const Config = require('Config');
 
-class HomePage extends React.Component {
+class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,20 +21,15 @@ class HomePage extends React.Component {
   componentDidMount() {
     fetch(`${Config.serverUrl}/posts`)
       .then(res => res.json())
-      .then(responseJSON => {
-        const posts = responseJSON;
-        this.setState({ posts });
-      });
+      .then(responseJSON => this.setState({ posts: responseJSON }));
   }
 
   handleFilterTextInput(filterText) {
-    this.setState({
-      filterText: filterText
-    });
+    this.setState({ filterText });
   }
 
   render() {
-    let filteredPosts = this.state.posts.filter(post => {
+    const filteredPosts = this.state.posts.filter(post => {
         return post.body.indexOf(this.state.filterText) !== -1 || post.title.indexOf(this.state.filterText) !== -1;
     });
 

@@ -1,9 +1,9 @@
-import React, {PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import Logo from '../logo/Logo';
 
 const Config = require('Config');
 
-class Header extends React.Component {
+class Header extends Component {
   render() {
     return (
       <header id="header">

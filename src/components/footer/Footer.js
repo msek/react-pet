@@ -1,6 +1,6 @@
-import React, {PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 
-class Footer extends React.Component {
+class Footer extends Component {
   render() {
     return (
       <footer>

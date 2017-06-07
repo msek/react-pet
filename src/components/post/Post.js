@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
 
-class Post extends React.Component {
+class Post extends Component {
   render() {
     return (
       <div className="panel panel-default">
