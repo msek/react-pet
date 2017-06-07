@@ -1,9 +1,14 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Logo from '../logo/Logo';
 
 const Config = require('Config');
 
 class Header extends Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired
+  };
+
   render() {
     return (
       <header id="header">
@@ -17,9 +22,5 @@ class Header extends Component {
     );
   }
 }
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired
-};
 
 export default Header;

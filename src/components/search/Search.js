@@ -1,14 +1,15 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
-class Search extends Component {
-  constructor(props) {
-    super(props);
-    this.handleFilterTextInputChange = this.handleFilterTextInputChange.bind(this);
-  }
+export default class Search extends Component {
+  static propTypes = {
+    filterText: PropTypes.string,
+    onFilterTextInput: PropTypes.func
+  };
 
-  handleFilterTextInputChange(e) {
+  handleFilterTextInputChange = (e) => {
     this.props.onFilterTextInput(e.target.value);
-  }
+  };
 
   render() {
     return (
@@ -31,10 +32,3 @@ class Search extends Component {
     );
   }
 }
-
-Search.propTypes = {
-  filterText: PropTypes.string,
-  onFilterTextInput: PropTypes.func
-};
-
-export default Search;

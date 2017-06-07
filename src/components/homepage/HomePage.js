@@ -12,38 +12,34 @@ class HomePage extends Component {
     super(props);
     this.state = {
       filterText: '',
-      posts: []
+      posts: [],
+      filteredPosts: []
     };
-
-    this.handleFilterTextInput = this.handleFilterTextInput.bind(this);
   }
 
   componentDidMount() {
     fetch(`${Config.serverUrl}/posts`)
       .then(res => res.json())
-      .then(responseJSON => this.setState({ posts: responseJSON }));
+      .then(responseJSON => this.setState({ posts: responseJSON, filteredPosts: responseJSON }));
   }
 
-  handleFilterTextInput(filterText) {
+  handleFilterTextInput = (filterText) => {
     this.setState({ filterText });
+    this.setState({ filteredPosts: this.filterPosts(filterText) });
+  };
+
+  filterPosts(filterQuery) {
+    return this.state.posts.filter(post => {
+      return post.body.indexOf(filterQuery) !== -1 || post.title.indexOf(filterQuery) !== -1;
+    });
   }
 
   render() {
-    const filteredPosts = this.state.posts.filter(post => {
-        return post.body.indexOf(this.state.filterText) !== -1 || post.title.indexOf(this.state.filterText) !== -1;
-    });
-
     return (
       <div className="container">
         <Header title="React Pet Project #1" />
-        <Search onFilterTextInput={this.handleFilterTextInput.bind(this)} filterText={this.state.filterText} />
-        <div className="row">
-          <div className="col-xs-12">
-            {filteredPosts.map(post =>
-              <Post key={post.id} id={post.id} title={post.title} body={post.body} />
-            )}
-          </div>
-        </div>
+        <Search onFilterTextInput={this.handleFilterTextInput} filterText={this.state.filterText} />
+        <PostList posts={this.state.filteredPosts} />
         <Footer />
       </div>
     );

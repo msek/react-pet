@@ -1,7 +1,14 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router';
 
 class Post extends Component {
+  static propTypes = {
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    body: PropTypes.string.isRequired
+  };
+
   render() {
     return (
       <div className="panel panel-default">
@@ -23,10 +30,5 @@ class Post extends Component {
     );
   }
 }
-
-Post.propTypes = {
-  title: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired
-};
 
 export default Post;

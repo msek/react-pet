@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 
-class PostPage extends React.Component {
+const Config = require('Config');
+
+export default class PostPage extends Component {
+  static propTypes = {
+    params: PropTypes.object.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -11,10 +18,10 @@ class PostPage extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`http://jsonplaceholder.typicode.com/post/` + this.props.params.postId)
+    fetch(`${Config.serverUrl}/posts/${this.props.params.postId}`)
       .then(res => res.json())
       .then(responseJSON => {
-        const post = responseJSON.map(item => item);
+        const post = responseJSON;
         this.setState({ post });
       });
   }
@@ -47,5 +54,3 @@ class PostPage extends React.Component {
     );
   }
 }
-
-export default PostPage;

@@ -1,6 +1,11 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 class Footer extends Component {
+  static propTypes = {
+    content: PropTypes.string
+  };
+
   render() {
     return (
       <footer>
@@ -13,9 +18,5 @@ class Footer extends Component {
     );
   }
 }
-
-Footer.propTypes = {
-  content: PropTypes.string
-};
 
 export default Footer;
