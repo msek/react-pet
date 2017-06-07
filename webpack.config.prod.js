@@ -72,6 +72,9 @@ export default {
       }
     })
   ],
+  externals: {
+    'Config': JSON.stringify(require('./config.json'))
+  },
   module: {
     rules: [
       {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader'},

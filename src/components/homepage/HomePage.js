@@ -5,6 +5,8 @@ import Post from '../post/Post';
 import Footer from '../footer/Footer';
 import 'whatwg-fetch';
 
+const Config = require('Config');
+
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +19,7 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`http://jsonplaceholder.typicode.com/posts`)
+    fetch(`${Config.serverUrl}/posts`)
       .then(res => res.json())
       .then(responseJSON => {
         const posts = responseJSON;
