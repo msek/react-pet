@@ -4,8 +4,7 @@ import Header from '../header/Header';
 import HomePage from '../homepage/HomePage';
 import PostEditPage from '../posteditpage/PostEditPage';
 import Footer from '../footer/Footer';
-
-require('../../styles/styles.scss');
+import './app.scss';
 
 export default class App extends Component {
   render() {

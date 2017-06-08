@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Logo from '../logo/Logo';
+import './header.scss';
 
 const Config = require('Config');
 
