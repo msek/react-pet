@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import Header from '../header/Header';
 import Search from '../search/Search';
 import PostList from '../postlist/PostList';
-import Footer from '../footer/Footer';
 import 'whatwg-fetch';
 
 const Config = require('Config');
@@ -36,11 +34,9 @@ class HomePage extends Component {
 
   render() {
     return (
-      <div className="container">
-        <Header title="React Pet Project #1" />
-        <Search onFilterTextInput={this.handleFilterTextInput} filterText={this.state.filterText} />
-        <PostList posts={this.state.filteredPosts} />
-        <Footer />
+      <div>
+          <Search onFilterTextInput={this.handleFilterTextInput} filterText={this.state.filterText} />
+          <PostList posts={this.state.filteredPosts} />
       </div>
     );
   }
