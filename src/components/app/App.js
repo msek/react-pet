@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Route, { BrowserRouter as Router } from 'react-router-dom';
+import {Route, BrowserRouter as Router} from 'react-router-dom';
 import Header from '../header/Header';
 import HomePage from '../homepage/HomePage';
 import PostEditPage from '../posteditpage/PostEditPage';
@@ -11,7 +11,7 @@ export default class App extends Component {
     return (
       <Router>
         <div className="container">
-          <Header title="React Pet Project #1" />
+          <Header title="React Pet Project" />
           <Route exact path="/" component={HomePage} />
           <Route path="/post/:postId" component={PostEditPage} />
           <Footer />
