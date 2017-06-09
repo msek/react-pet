@@ -22,10 +22,7 @@ export default class PostPage extends Component {
   componentDidMount() {
     fetch(`${Config.serverUrl}/posts/${this.props.match.params.postId}`)
       .then(res => res.json())
-      .then(responseJSON => {
-        const post = responseJSON;
-        this.setState({ post });
-      });
+      .then(responseJSON => { this.setState({ post: responseJSON }); });
   }
 
   render() {
