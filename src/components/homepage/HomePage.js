@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Search from '../search/Search';
 import PostList from '../postlist/PostList';
+import _ from 'lodash';
 import 'whatwg-fetch';
 
 const Config = require('Config');
@@ -23,14 +24,15 @@ class HomePage extends Component {
 
   handleFilterTextInput = (filterText) => {
     this.setState({ filterText });
-    this.setState({ filteredPosts: this.filterPosts(filterText) });
+    this.filterPosts();
   };
 
-  filterPosts(filterQuery) {
-    return this.state.posts.filter(post => {
-      return post.body.indexOf(filterQuery) !== -1 || post.title.indexOf(filterQuery) !== -1;
-    });
-  }
+  filterPosts = _.debounce(() => {
+    let filteredPosts = this.state.posts.filter(post =>
+      post.body.indexOf(this.state.filterText) !== -1 || post.title.indexOf(this.state.filterText) !== -1
+    );
+    this.setState({ filteredPosts });
+  }, 500);
 
   render() {
     return (
