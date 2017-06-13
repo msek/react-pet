@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Post from '../post/Post';
 import 'whatwg-fetch';
 
-class PostList extends Component {
+export default class PostList extends Component {
   static propTypes = {
     posts: PropTypes.array
   };
@@ -18,5 +18,3 @@ class PostList extends Component {
     );
   }
 }
-
-export default PostList;
