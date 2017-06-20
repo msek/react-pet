@@ -1,25 +1,31 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Search from '../search/Search';
 import PostList from '../postlist/PostList';
+import Header from '../header/Header';
+import Footer from '../footer/Footer';
 import _ from 'lodash';
 import 'whatwg-fetch';
 
-const Config = require('Config');
+export default class HomePage extends Component {
+  static propTypes = {
+    posts: PropTypes.array.isRequired
+  };
 
-class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       filterText: '',
-      posts: [],
       filteredPosts: []
     };
   }
 
-  componentDidMount() {
-    fetch(`${Config.serverUrl}/posts`)
-      .then(res => res.json())
-      .then(responseJSON => this.setState({ posts: responseJSON, filteredPosts: responseJSON }));
+  componentWillMount() {
+    this.filterPosts();
+  }
+
+  componentWillReceiveProps() {
+    this.filterPosts();
   }
 
   handleFilterTextInput = (filterText) => {
@@ -28,20 +34,23 @@ class HomePage extends Component {
   };
 
   filterPosts = _.debounce(() => {
-    let filteredPosts = this.state.posts.filter(post =>
-      post.body.indexOf(this.state.filterText) !== -1 || post.title.indexOf(this.state.filterText) !== -1
-    );
+    let filteredPosts = this.props.posts.filter(post => {
+      console.log(post.body.indexOf(this.state.filterText));
+      return post.body.indexOf(this.state.filterText) !== -1 || post.title.indexOf(this.state.filterText) !== -1;
+    });
+    console.log(filteredPosts);
     this.setState({ filteredPosts });
-  }, 500);
+  }, 300);
 
   render() {
     return (
       <div>
-          <Search onFilterTextInput={this.handleFilterTextInput} filterText={this.state.filterText} />
-          <PostList posts={this.state.filteredPosts} />
+        <Header title="React Pet Project" />
+        <Search onFilterTextInput={this.handleFilterTextInput} filterText={this.state.filterText} />
+        <PostList posts={this.state.filteredPosts}
+                  deletePost={this.props.deletePost} />
+        <Footer />
       </div>
     );
   }
 }
-
-export default HomePage;
