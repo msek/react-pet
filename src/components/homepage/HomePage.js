@@ -35,10 +35,8 @@ export default class HomePage extends Component {
 
   filterPosts = _.debounce(() => {
     let filteredPosts = this.props.posts.filter(post => {
-      console.log(post.body.indexOf(this.state.filterText));
       return post.body.indexOf(this.state.filterText) !== -1 || post.title.indexOf(this.state.filterText) !== -1;
     });
-    console.log(filteredPosts);
     this.setState({ filteredPosts });
   }, 300);
 
