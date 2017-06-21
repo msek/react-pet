@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
@@ -9,6 +9,8 @@ const Config = require('Config');
 
 export default class PostEditPage extends Component {
   static propTypes = {
+    getPost: PropTypes.func,
+    updatePost: PropTypes.func,
     match: PropTypes.object.isRequired
   };
 
@@ -16,31 +18,40 @@ export default class PostEditPage extends Component {
     super(props);
     this.state = {
       post: {
+        id: Number(this.props.match.params.postId) || -1,
         title: '',
-        body: ''
+        body: '',
+        author: ''
       },
       comments: [],
-      selectedOption: 'user1',
-      postId: Number(this.props.match.params.postId)
+      postId: Number(this.props.match.params.postId) || -1,
+      redirect: false
     };
   }
 
   componentDidMount() {
-    fetch(`${Config.serverUrl}/posts/${this.state.postId}`)
-      .then(res => res.json())
-      .then(responseJSON => { this.setState({ post: responseJSON }); });
-    fetch(`${Config.serverUrl}/posts/${this.state.postId}/comments`)
-      .then(res => res.json())
-      .then(responseJSON => { this.setState({ comments: responseJSON }); });
+    if(this.state.postId !== -1) {
+      this.getPost(this.state.postId);
+      fetch(`${Config.serverUrl}/posts/${this.state.postId}/comments`)
+        .then(res => res.json())
+        .then(responseJSON => { this.setState({ comments: responseJSON }); });
+    }
   }
+
+  getPost = (postId) => {
+    let post = this.props.getPost(postId);
+    post.length === 0 ? this.setState({ redirect: true }) : this.setState({ post : post[0] });
+  };
 
   handleFormSubmit = (e) => {
     e.preventDefault();
-    alert(this.state.selectedOption);
+    this.props.updatePost(this.state.post);
+    this.setState({ redirect: true });
   };
 
   handleOptionChange = (e) => {
-    this.setState({ selectedOption: e.target.value });
+    let post = Object.assign({}, this.state.post, {author: Number(e.target.value)});
+    this.setState({ post });
   };
 
   handlePostTitleChange = (e) => {
@@ -54,13 +65,17 @@ export default class PostEditPage extends Component {
   };
 
   render() {
+    if(this.state.redirect) {
+      return <Redirect to="/" />;
+    }
+
     return (
       <div>
         <Header title="React Pet Project" postId={this.state.postId} postTitle={this.state.post.title} />
         <div className="row">
           <div className="col-xs-12">
             <h3>
-              { this.state.postId ? `Edit Post #` + this.state.postId : `Create New Post` }
+              { this.state.postId === -1 ? `Create New Post` : `Edit Post #` + this.state.postId}
             </h3>
             <form onSubmit={this.handleFormSubmit}>
               <div className="form-group">
@@ -78,30 +93,32 @@ export default class PostEditPage extends Component {
 
               <div className="radio">
                 <label>
-                  <input type="radio" value="user1" name="postAuthor"
-                         checked={this.state.selectedOption === 'user1'}
+                  <input type="radio" value="0" name="postAuthor"
+                         checked={this.state.post.author === 0}
                          onChange={this.handleOptionChange} />
                   User 1
                 </label>
               </div>
               <div className="radio">
                 <label>
-                  <input type="radio" value="user2" name="postAuthor"
-                         checked={this.state.selectedOption === 'user2'}
+                  <input type="radio" value="1" name="postAuthor"
+                         checked={this.state.post.author === 1}
                          onChange={this.handleOptionChange} />
                   User 2
                 </label>
               </div>
               <div className="radio">
                 <label>
-                  <input type="radio" value="user3" name="postAuthor"
-                         checked={this.state.selectedOption === 'user3'}
+                  <input type="radio" value="2" name="postAuthor"
+                         checked={this.state.post.author === 2}
                          onChange={this.handleOptionChange} />
                   User 3
                 </label>
               </div>
 
-              <button disabled={ this.state.post.title === '' || this.state.post.body === '' }
+              <button disabled={ this.state.post.title === '' ||
+                                 this.state.post.body === '' ||
+                                 this.state.post.author === '' }
                       className="btn btn-default" type="submit">
                 Save changes
               </button>
