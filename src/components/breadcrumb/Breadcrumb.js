@@ -17,7 +17,9 @@ export default class Breadcrumb extends Component {
     return (
       <div className="breadcrumbs">
         <Link to="/">Posts </Link>
-         > {this.props.postTitle} ({this.props.postId})
+         > { (this.props.postId === -1) ? <span>New Post</span> :
+            <span>{this.props.postTitle} ({this.props.postId})</span>
+        }
       </div>
     );
   }
