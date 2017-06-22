@@ -1,53 +1,121 @@
 import React, {Component} from 'react';
+import {Link, Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Header from '../header/Header';
+import Footer from '../footer/Footer';
+import RadioList from '../radiolist/RadioList';
+import Comment from '../comment/Comment';
+import Config from '../../config/Config';
 
-const Config = require('Config');
-
-export default class PostPage extends Component {
+export default class PostEditPage extends Component {
   static propTypes = {
-    match: {
-      params: {
-        postId: PropTypes.number.isRequired
-      }
-    }
+    getPost: PropTypes.func,
+    updatePost: PropTypes.func,
+    match: PropTypes.object.isRequired
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      post: []
+      post: {
+        id: Number(this.props.match.params.postId) || -1,
+        title: '',
+        body: '',
+        userId: -1
+      },
+      comments: [],
+      postId: Number(this.props.match.params.postId) || -1,
+      redirect: false
     };
   }
 
   componentDidMount() {
-    fetch(`${Config.serverUrl}/posts/${this.props.match.params.postId}`)
-      .then(res => res.json())
-      .then(responseJSON => {
-        const post = responseJSON;
-        this.setState({ post });
-      });
+    this.state.postId !== -1 && this.fetchPostAndComments(this.state.postId);
   }
 
+  fetchPostAndComments = (postId) => {
+    let post = this.props.getPost(postId);
+    if(post.length === 0) {
+      this.setState({ redirect: true });
+    } else {
+      this.setState({ post : post[0] });
+      fetch(`${Config.serverUrl}/posts/${this.state.postId}/comments`)
+        .then(res => res.json())
+        .then(responseJSON => { this.setState({ comments: responseJSON }); });
+    }
+  };
+
+  handleFormSubmit = (e) => {
+    e.preventDefault();
+    this.props.updatePost(this.state.post);
+    this.setState({ redirect: true });
+  };
+
+  handleAuthorChange = (e) => {
+    let post = Object.assign({}, this.state.post, {userId: Number(e.target.value)});
+    this.setState({ post });
+  };
+
+  handlePostTitleChange = (e) => {
+    let post = Object.assign({}, this.state.post, {title: e.target.value});
+    this.setState({ post });
+  };
+
+  handlePostBodyChange = (e) => {
+    let post = Object.assign({}, this.state.post, {body: e.target.value});
+    this.setState({ post });
+  };
+
   render() {
+    if(this.state.redirect) {
+      return <Redirect to="/" />;
+    }
+
     return (
-      <div className="row">
-        <div className="col-xs-12">
-          <h3>Edit / Insert Post #{this.props.match.params.postId}</h3>
-          <form action="">
-            <div className="form-group">
-              <input type="text"
-                     className="form-control"
-                     id="postTitle"
-                     value={this.state.post.title}
-              />
-            </div>
-            <div className="form-group">
-              <textarea className="form-control"
-                        rows="6"
-                        value={this.state.post.body} />
-            </div>
-          </form>
+      <div>
+        <Header title="React Pet Project" postId={this.state.postId} postTitle={this.state.post.title} />
+        <div className="row">
+          <div className="col-xs-12">
+            <h3>
+              {this.state.postId === -1 ? `Create New Post` : `Edit Post #` + this.state.postId}
+            </h3>
+            <form onSubmit={this.handleFormSubmit}>
+              <div className="form-group">
+                <input type="text"
+                       className="form-control"
+                       onChange={this.handlePostTitleChange}
+                       value={this.state.post.title} />
+              </div>
+              <div className="form-group">
+                <textarea className="form-control"
+                          rows="6"
+                          onChange={this.handlePostBodyChange}
+                          value={this.state.post.body} />
+              </div>
+
+              <RadioList options={this.props.authors}
+                         selectedOption={this.state.post.userId}
+                         submitOption={this.handleAuthorChange} />
+
+              <button disabled={this.state.post.title === '' ||
+                                 this.state.post.body === '' ||
+                                 this.state.post.userId === -1}
+                      className="btn btn-default" type="submit">
+                Save changes
+              </button>
+              <Link to="/" className="btn btn-default">Cancel</Link>
+            </form>
+          </div>
         </div>
+        <div className="row">
+          <div className="col-xs-12">
+            <h3>Comments</h3>
+            {this.state.comments.map(comment =>
+              <Comment key={comment.id} name={comment.name} body={comment.body} />
+            )}
+          </div>
+        </div>
+        <Footer />
       </div>
     );
   }
