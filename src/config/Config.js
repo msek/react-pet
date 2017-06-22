@@ -1,4 +1,4 @@
-{
+export default {
   "serverUrl": "http://jsonplaceholder.typicode.com",
   "logoUrl": "http://lorempixel.com/200/200"
-}
+};
