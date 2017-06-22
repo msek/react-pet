@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {Route, Switch, BrowserRouter as Router} from 'react-router-dom';
 import HomePage from '../homepage/HomePage';
 import PostEditPage from '../posteditpage/PostEditPage';
+import Config from '../../config/Config';
+import _ from 'lodash';
 import './app.scss';
-
-const Config = require('Config');
 
 export default class App extends Component {
   constructor(props) {
@@ -20,10 +20,14 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    this.fetchPosts();
+  }
+
+  fetchPosts = () => {
     fetch(`${Config.serverUrl}/posts`)
       .then(res => res.json())
-      .then(responseJSON => this.setState({ posts: responseJSON }));
-  }
+      .then(responseJSON => this.setState({posts: responseJSON}));
+  };
 
   getPost = (postId) => {
     return this.state.posts.filter(obj => {
@@ -32,7 +36,8 @@ export default class App extends Component {
   };
 
   addPost = (post) => {
-    let posts = [post, ...this.state.posts];
+    post.id = _.last(this.state.posts).id + 1;
+    let posts = [...this.state.posts, post];
     this.setState({ posts });
   };
 
@@ -55,21 +60,18 @@ export default class App extends Component {
       <Router>
         <div className="container">
           <Switch>
-            <Route exact path="/" render={ () =>
+            <Route exact path="/" render={() =>
               <HomePage posts={this.state.posts}
-                        deletePost={this.deletePost} /> }
-            />
-            <Route path="/post/new" render={ (props) =>
+                        deletePost={this.deletePost} />} />
+            <Route path="/post/new" render={(props) =>
               <PostEditPage updatePost={this.addPost}
                             authors={this.state.authors}
-                            {...props} /> }
-            />
-            <Route path="/post/:postId" render={ props =>
+                            {...props} />} />
+            <Route path="/post/:postId" render={props =>
               <PostEditPage getPost={this.getPost}
                             updatePost={this.updatePost}
                             authors={this.state.authors}
-                            {...props} /> }
-            />
+                            {...props} />} />
           </Switch>
         </div>
       </Router>

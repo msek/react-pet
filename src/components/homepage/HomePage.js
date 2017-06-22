@@ -9,7 +9,8 @@ import 'whatwg-fetch';
 
 export default class HomePage extends Component {
   static propTypes = {
-    posts: PropTypes.array.isRequired
+    posts: PropTypes.array.isRequired,
+    deletePost: PropTypes.func.isRequired
   };
 
   constructor(props) {

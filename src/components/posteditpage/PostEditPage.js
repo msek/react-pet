@@ -3,9 +3,9 @@ import {Link, Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
+import RadioList from '../radiolist/RadioList';
 import Comment from '../comment/Comment';
-
-const Config = require('Config');
+import Config from '../../config/Config';
 
 export default class PostEditPage extends Component {
   static propTypes = {
@@ -21,7 +21,7 @@ export default class PostEditPage extends Component {
         id: Number(this.props.match.params.postId) || -1,
         title: '',
         body: '',
-        author: ''
+        userId: -1
       },
       comments: [],
       postId: Number(this.props.match.params.postId) || -1,
@@ -30,17 +30,19 @@ export default class PostEditPage extends Component {
   }
 
   componentDidMount() {
-    if(this.state.postId !== -1) {
-      this.getPost(this.state.postId);
+    this.state.postId !== -1 && this.fetchPostAndComments(this.state.postId);
+  }
+
+  fetchPostAndComments = (postId) => {
+    let post = this.props.getPost(postId);
+    if(post.length === 0) {
+      this.setState({ redirect: true });
+    } else {
+      this.setState({ post : post[0] });
       fetch(`${Config.serverUrl}/posts/${this.state.postId}/comments`)
         .then(res => res.json())
         .then(responseJSON => { this.setState({ comments: responseJSON }); });
     }
-  }
-
-  getPost = (postId) => {
-    let post = this.props.getPost(postId);
-    post.length === 0 ? this.setState({ redirect: true }) : this.setState({ post : post[0] });
   };
 
   handleFormSubmit = (e) => {
@@ -49,8 +51,8 @@ export default class PostEditPage extends Component {
     this.setState({ redirect: true });
   };
 
-  handleOptionChange = (e) => {
-    let post = Object.assign({}, this.state.post, {author: Number(e.target.value)});
+  handleAuthorChange = (e) => {
+    let post = Object.assign({}, this.state.post, {userId: Number(e.target.value)});
     this.setState({ post });
   };
 
@@ -75,7 +77,7 @@ export default class PostEditPage extends Component {
         <div className="row">
           <div className="col-xs-12">
             <h3>
-              { this.state.postId === -1 ? `Create New Post` : `Edit Post #` + this.state.postId}
+              {this.state.postId === -1 ? `Create New Post` : `Edit Post #` + this.state.postId}
             </h3>
             <form onSubmit={this.handleFormSubmit}>
               <div className="form-group">
@@ -91,34 +93,13 @@ export default class PostEditPage extends Component {
                           value={this.state.post.body} />
               </div>
 
-              <div className="radio">
-                <label>
-                  <input type="radio" value="0" name="postAuthor"
-                         checked={this.state.post.author === 0}
-                         onChange={this.handleOptionChange} />
-                  User 1
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input type="radio" value="1" name="postAuthor"
-                         checked={this.state.post.author === 1}
-                         onChange={this.handleOptionChange} />
-                  User 2
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input type="radio" value="2" name="postAuthor"
-                         checked={this.state.post.author === 2}
-                         onChange={this.handleOptionChange} />
-                  User 3
-                </label>
-              </div>
+              <RadioList options={this.props.authors}
+                         selectedOption={this.state.post.userId}
+                         submitOption={this.handleAuthorChange} />
 
-              <button disabled={ this.state.post.title === '' ||
+              <button disabled={this.state.post.title === '' ||
                                  this.state.post.body === '' ||
-                                 this.state.post.author === '' }
+                                 this.state.post.userId === -1}
                       className="btn btn-default" type="submit">
                 Save changes
               </button>
