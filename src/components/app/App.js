@@ -4,7 +4,7 @@ import HomePage from '../homepage/HomePage';
 import PostEditPage from '../posteditpage/PostEditPage';
 import Config from '../../config/Config';
 import _ from 'lodash';
-import './app.scss';
+import './app.css';
 
 export default class App extends Component {
   constructor(props) {

@@ -6,6 +6,7 @@ import Footer from '../footer/Footer';
 import RadioList from '../radiolist/RadioList';
 import Comment from '../comment/Comment';
 import Config from '../../config/Config';
+import './posteditpage.css';
 
 export default class PostEditPage extends Component {
   static propTypes = {

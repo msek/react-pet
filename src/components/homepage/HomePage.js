@@ -6,6 +6,7 @@ import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import _ from 'lodash';
 import 'whatwg-fetch';
+import './homepage.css';
 
 export default class HomePage extends Component {
   static propTypes = {

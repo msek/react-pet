@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Logo from '../logo/Logo';
 import Breadcrumb from '../breadcrumb/Breadcrumb';
 import Config from '../../config/Config';
-import './header.scss';
+import './header.css';
 
 export default class Header extends Component {
   static propTypes = {

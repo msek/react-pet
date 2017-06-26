@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-require('./logo.scss');
+require('./logo.css');
 
 export default class Logo extends Component {
   static propTypes = {

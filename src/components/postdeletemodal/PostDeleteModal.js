@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import './postdeletemodal.scss';
+import './postdeletemodal.css';
 
 export default class PostDeleteModal extends Component {
   static propTypes = {

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import './radiolist.css';
 
 export default class RadioList extends Component {
   static propTypes = {

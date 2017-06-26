@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import './search.scss';
+import './search.css';
 
 export default class Search extends Component {
   static propTypes = {

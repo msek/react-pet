@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import PostDeleteModal from '../postdeletemodal/PostDeleteModal';
-import './post.scss';
+import './post.css';
 
 export default class Post extends Component {
   static propTypes = {
