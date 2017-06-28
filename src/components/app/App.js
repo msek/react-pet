@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import {Route, Switch, BrowserRouter as Router} from 'react-router-dom';
+import configureStore from '../../store/configureStore';
 import HomePage from '../homepage/HomePage';
 import PostEditPage from '../posteditpage/PostEditPage';
 import Config from '../../config/Config';
 import _ from 'lodash';
 import './app.css';
+
+let store = configureStore();
 
 export default class App extends Component {
   constructor(props) {
@@ -61,7 +64,8 @@ export default class App extends Component {
         <div className="container">
           <Switch>
             <Route exact path="/" render={() =>
-              <HomePage posts={this.state.posts}
+              <HomePage store={store}
+                        posts={this.state.posts}
                         deletePost={this.deletePost} />} />
             <Route path="/post/new" render={(props) =>
               <PostEditPage updatePost={this.addPost}

@@ -1,7 +1,6 @@
 import {createStore, compose, applyMiddleware} from 'redux';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
-import thunk from 'redux-thunk';
-import rootReducer from '../reducers';
+import rootReducer from '../reducers/rootReducer';
 
 function configureStoreProd(initialState) {
   const middlewares = [
@@ -9,7 +8,7 @@ function configureStoreProd(initialState) {
 
     // thunk middleware can also accept an extra argument to be passed to each thunk action
     // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
-    thunk,
+    // thunk,
   ];
 
   return createStore(rootReducer, initialState, compose(
@@ -28,7 +27,7 @@ function configureStoreDev(initialState) {
 
     // thunk middleware can also accept an extra argument to be passed to each thunk action
     // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
-    thunk,
+    // thunk,
   ];
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
@@ -40,7 +39,7 @@ function configureStoreDev(initialState) {
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => {
-      const nextReducer = require('../reducers').default; // eslint-disable-line global-require
+      const nextReducer = require('../reducers/rootReducer').default; // eslint-disable-line global-require
       store.replaceReducer(nextReducer);
     });
   }
