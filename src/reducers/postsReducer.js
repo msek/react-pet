@@ -1,7 +1,13 @@
 import { POSTS } from '../actions/actionTypes';
 
 const initialState = {
-  loading: false
+  isLoading: false,
+  posts: [],
+  authors: [
+    { id: 0, name: "John" },
+    { id: 1, name: "Jane" },
+    { id: 2, name: "James" }
+  ]
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -9,7 +15,7 @@ export default function reducer(state = initialState, action = {}) {
     case POSTS.METADATA_GET:
     case POSTS.WIDGETS_GET:
     case POSTS.WIDGET_CONFIGS_GET:
-      return { ...state, loading: true };
+      return { ...state, isLoading: true };
 
     default:
       return state;

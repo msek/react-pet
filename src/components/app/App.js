@@ -1,13 +1,19 @@
 import React, {Component} from 'react';
 import {Route, Switch, BrowserRouter as Router} from 'react-router-dom';
-import configureStore from '../../store/configureStore';
+import { connect } from 'react-redux';
 import HomePage from '../homepage/HomePage';
 import PostEditPage from '../posteditpage/PostEditPage';
 import Config from '../../config/Config';
 import _ from 'lodash';
 import './app.css';
 
-let store = configureStore();
+@connect(
+  state => ({
+
+  }), {
+
+  }
+)
 
 export default class App extends Component {
   constructor(props) {
