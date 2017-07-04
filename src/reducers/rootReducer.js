@@ -2,9 +2,9 @@
  import { routerReducer } from 'react-router-redux';
  import posts from './postsReducer';
 
- const appReducer = combineReducers({
+ const rootReducer = combineReducers({
    router: routerReducer,
    posts
  });
 
- export default appReducer;
+ export default rootReducer;

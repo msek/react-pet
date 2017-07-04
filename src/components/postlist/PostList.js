@@ -1,13 +1,29 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+
+import { connect } from 'react-redux';
+import { fetchPosts, fetchComments } from '../../actions/posts/actionCreators';
+
 import Post from '../post/Post';
 import 'whatwg-fetch';
 import './postlist.css';
 
-export default class PostList extends Component {
+const mapStateToProps = (state) => {
+  return {
+    posts: fetchPosts(state)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchPosts: () => dispatch(fetchPosts()),
+    fetchComments: fetchComments
+  };
+};
+
+class PostList extends Component {
   static propTypes = {
-    posts: PropTypes.array.isRequired,
-    deletePost: PropTypes.func.isRequired
+
   };
 
   render() {
@@ -15,11 +31,12 @@ export default class PostList extends Component {
       <div className="row">
         <div className="col-xs-12">
           {this.props.posts.map(post =>
-            <Post key={post.id} id={post.id} title={post.title} body={post.body}
-                  deletePost={this.props.deletePost} />
+            <Post key={post.id} id={post.id} title={post.title} body={post.body} />
           )}
         </div>
       </div>
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostList);

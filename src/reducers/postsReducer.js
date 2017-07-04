@@ -1,7 +1,7 @@
 import { POSTS } from '../actions/actionTypes';
 
 const initialState = {
-  isLoading: false,
+  isFetching: false,
   posts: [],
   authors: [
     { id: 0, name: "John" },
@@ -10,12 +10,17 @@ const initialState = {
   ]
 };
 
-export default function reducer(state = initialState, action = {}) {
+export default function posts(state = initialState, action) {
   switch (action.type) {
-    case POSTS.METADATA_GET:
-    case POSTS.WIDGETS_GET:
-    case POSTS.WIDGET_CONFIGS_GET:
-      return { ...state, isLoading: true };
+    case POSTS.POSTS_REQUEST:
+      return { ...state, isFetching: true };
+
+    case POSTS.POSTS_RECEIVE:
+      return { ...state, isFetching: false, posts: action.posts };
+
+    case POSTS.COMMENTS_GET:
+    case POSTS.POST_UPDATE:
+      return state;
 
     default:
       return state;

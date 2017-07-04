@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Search from '../search/Search';
 import PostList from '../postlist/PostList';
 import Header from '../header/Header';
@@ -10,8 +10,7 @@ import './homepage.css';
 
 export default class HomePage extends Component {
   static propTypes = {
-    posts: PropTypes.array.isRequired,
-    deletePost: PropTypes.func.isRequired
+
   };
 
   constructor(props) {
@@ -47,8 +46,7 @@ export default class HomePage extends Component {
       <div>
         <Header title="React Pet Project" />
         <Search onFilterTextInput={this.handleFilterTextInput} filterText={this.state.filterText} />
-        <PostList posts={this.state.filteredPosts}
-                  deletePost={this.props.deletePost} />
+        <PostList />
         <Footer />
       </div>
     );
