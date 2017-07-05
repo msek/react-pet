@@ -1,18 +1,16 @@
 import React, {Component} from 'react';
 import {Link, Redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import RadioList from '../radiolist/RadioList';
 import Comment from '../comment/Comment';
-import Config from '../../config/Config';
 import './posteditpage.css';
 
-export default class PostEditPage extends Component {
+class PostEditPage extends Component {
   static propTypes = {
-    getPost: PropTypes.func,
-    updatePost: PropTypes.func,
-    match: PropTypes.object.isRequired
+    match: PropTypes.array
   };
 
   constructor(props) {
@@ -40,9 +38,7 @@ export default class PostEditPage extends Component {
       this.setState({ redirect: true });
     } else {
       this.setState({ post : post[0] });
-      fetch(`${Config.serverUrl}/posts/${this.state.postId}/comments`)
-        .then(res => res.json())
-        .then(responseJSON => { this.setState({ comments: responseJSON }); });
+      // get comments for post
     }
   };
 
@@ -85,16 +81,16 @@ export default class PostEditPage extends Component {
                 <input type="text"
                        className="form-control"
                        onChange={this.handlePostTitleChange}
-                       value={this.state.post.title} />
+                       value={this.props.state.posts[this.state.postId].title} />
               </div>
               <div className="form-group">
                 <textarea className="form-control"
                           rows="6"
                           onChange={this.handlePostBodyChange}
-                          value={this.state.post.body} />
+                          value={this.props.state.posts[this.state.postId].body} />
               </div>
 
-              <RadioList options={this.props.authors}
+              <RadioList options={this.props.state.users}
                          selectedOption={this.state.post.userId}
                          submitOption={this.handleAuthorChange} />
 
@@ -121,3 +117,18 @@ export default class PostEditPage extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  const getPostById = (postId) => {
+    return state.posts.posts.filter(obj => {
+      return obj.id === Number(postId);
+    });
+  };
+
+  return {
+    state: state.posts,
+    post: getPostById(2)
+  };
+};
+
+export default connect(mapStateToProps)(PostEditPage);

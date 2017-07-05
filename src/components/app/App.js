@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Route, Switch, BrowserRouter as Router} from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { fetchPosts, fetchComments } from '../../actions/posts/actionCreators';
 
 import HomePage from '../homepage/HomePage';
 import PostEditPage from '../posteditpage/PostEditPage';
@@ -11,18 +10,17 @@ import PostEditPage from '../posteditpage/PostEditPage';
 import './app.css';
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    posts: fetchPosts(state)
+    state
   };
 };
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchPosts: () => dispatch(fetchPosts()),
-    fetchComments: fetchComments
-  };
-};
+//
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     fetchPosts: () => fetchPosts(dispatch)
+//   };
+// };
 
 class App extends Component {
   static propTypes = {
@@ -33,9 +31,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      searchParams: ''
-    };
+
   }
 
   componentDidMount() {
@@ -79,14 +75,12 @@ class App extends Component {
         <div className="container">
           <Switch>
             <Route exact path="/" render={() => <HomePage />} />
-            <Route path="/post/new" render={(props) =>
-              <PostEditPage updatePost={this.addPost}
-                            authors={this.state.authors}
-                            {...props} />} />
+
+            <Route path="/post/new" render={() => <PostEditPage />} />
+
             <Route path="/post/:postId" render={props =>
               <PostEditPage getPost={this.getPost}
                             updatePost={this.updatePost}
-                            authors={this.state.authors}
                             {...props} />} />
           </Switch>
         </div>
@@ -95,4 +89,4 @@ class App extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

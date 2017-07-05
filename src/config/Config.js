@@ -1,5 +1,5 @@
 const Config = {
-  "serverUrl": "http://jsonplaceholder.typicode.com",
+  "serverUrl": "http://localhost:3003",
   "logoUrl": "http://lorempixel.com/200/200"
 };
 
