@@ -7,6 +7,12 @@ export function requestPosts() {
   };
 }
 
+export function requestUsers() {
+  return {
+    type: POSTS.USERS_REQUEST
+  };
+}
+
 export function fetchComments(comments) {
   return {
     type: POSTS.COMMENTS_GET,
@@ -14,19 +20,32 @@ export function fetchComments(comments) {
   };
 }
 
-function receivePosts(json) {
-  return {
+const receivePosts = (data) => ({
     type: POSTS.POSTS_RECEIVE,
-    posts: json
-  };
-}
+    data
+});
 
-export function fetchPosts() {
-  console.log('fetching posts');
+export const fetchPosts = () => {
   return dispatch => {
     dispatch(requestPosts());
+
     return fetch(`${Config.serverUrl}/posts`)
       .then(response => response.json())
       .then(json => dispatch(receivePosts(json)));
   };
-}
+};
+
+const receiveUsers = (data) => ({
+    type: POSTS.USERS_RECEIVE,
+    data
+});
+
+export const fetchUsers = () => {
+  return dispatch => {
+    dispatch(requestUsers());
+
+    return fetch(`${Config.serverUrl}/users`)
+      .then(response => response.json())
+      .then(json => dispatch(receiveUsers(json)));
+  };
+};

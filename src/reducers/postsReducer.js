@@ -12,15 +12,18 @@ const initialState = {
 
 export default function posts(state = initialState, action) {
   switch (action.type) {
+
     case POSTS.POSTS_REQUEST:
       return { ...state, isFetching: true };
 
     case POSTS.POSTS_RECEIVE:
-      return { ...state, isFetching: false, posts: action.posts };
+      return { ...state, isFetching: false, posts: action.data };
 
-    case POSTS.COMMENTS_GET:
-    case POSTS.POST_UPDATE:
-      return state;
+    case POSTS.USERS_REQUEST:
+      return { ...state, isFetching: true };
+
+    case POSTS.USERS_RECEIVE:
+      return { ...state, isFetching: false, users: action.data };
 
     default:
       return state;

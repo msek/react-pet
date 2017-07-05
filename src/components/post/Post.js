@@ -4,12 +4,11 @@ import {Link} from 'react-router-dom';
 import PostDeleteModal from '../postdeletemodal/PostDeleteModal';
 import './post.css';
 
-export default class Post extends Component {
+class Post extends Component {
   static propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    body: PropTypes.string.isRequired,
-    deletePost: PropTypes.func.isRequired
+    body: PropTypes.string.isRequired
   };
 
   constructor(props) {
@@ -60,3 +59,5 @@ export default class Post extends Component {
     );
   }
 }
+
+export default Post;

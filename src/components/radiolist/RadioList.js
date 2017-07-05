@@ -18,7 +18,7 @@ export default class RadioList extends Component {
               <input type="radio" value={option.id} name="postAuthor"
                      checked={this.props.selectedOption === option.id}
                      onChange={this.props.submitOption} />
-              {option.name}
+              {option.firstName} {option.lastName}
             </label>
           </div>
         )}
