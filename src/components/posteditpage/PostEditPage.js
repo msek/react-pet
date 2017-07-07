@@ -128,7 +128,7 @@ const mapStateToProps = (state, props) => {
   return {
     post,
     comments,
-    users: state.users
+    users: state.posts.users
   };
 };
 

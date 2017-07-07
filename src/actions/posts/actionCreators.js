@@ -45,15 +45,7 @@ const createPost = post => ({
 });
 
 export const savePost = (post) => {
-  return dispatch => {
-    if (post.id >= 0) {
-      return dispatch(updatePost(post));
-    }
-    post = {...post, id: 202};
-    return dispatch(createPost(post));
-    // return fetch(`${Config.serverUrl}/comments`, { method: 'POST', post: post })
-    //   .then(savedPost => savedPost.id ? console.log('success') : console.log('fail'));
-  };
+  return dispatch => post.id >= 0 ? dispatch(updatePost(post)) : dispatch(createPost(post));
 };
 
 export const deletePost = postId => ({
