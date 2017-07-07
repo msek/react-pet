@@ -1,45 +1,63 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Search from '../search/Search';
 import PostList from '../postlist/PostList';
+import Header from '../header/Header';
+import Footer from '../footer/Footer';
+import _ from 'lodash';
 import 'whatwg-fetch';
-
-const Config = require('Config');
+import './homepage.css';
 
 class HomePage extends Component {
+  static propTypes = {
+    posts: PropTypes.array.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       filterText: '',
-      posts: [],
       filteredPosts: []
     };
   }
 
-  componentDidMount() {
-    fetch(`${Config.serverUrl}/posts`)
-      .then(res => res.json())
-      .then(responseJSON => this.setState({ posts: responseJSON, filteredPosts: responseJSON }));
+  componentWillMount() {
+    this.filterPosts();
+  }
+
+  componentWillReceiveProps() {
+    this.filterPosts();
   }
 
   handleFilterTextInput = (filterText) => {
     this.setState({ filterText });
-    this.setState({ filteredPosts: this.filterPosts(filterText) });
+    this.filterPosts();
   };
 
-  filterPosts(filterQuery) {
-    return this.state.posts.filter(post => {
-      return post.body.indexOf(filterQuery) !== -1 || post.title.indexOf(filterQuery) !== -1;
+  filterPosts = _.debounce(() => {
+    let filteredPosts = this.props.posts.filter(post => {
+      return post.body.indexOf(this.state.filterText) !== -1 || post.title.indexOf(this.state.filterText) !== -1;
     });
-  }
+    this.setState({ filteredPosts });
+  }, 300);
 
   render() {
     return (
       <div>
-          <Search onFilterTextInput={this.handleFilterTextInput} filterText={this.state.filterText} />
-          <PostList posts={this.state.filteredPosts} />
+        <Header title="React Pet Project" />
+        <Search onFilterTextInput={this.handleFilterTextInput} filterText={this.state.filterText} />
+        <PostList posts={this.state.filteredPosts} />
+        <Footer />
       </div>
     );
   }
 }
 
-export default HomePage;
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts.posts
+  };
+};
+
+export default connect(mapStateToProps)(HomePage);

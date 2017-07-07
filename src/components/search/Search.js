@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import './search.scss';
+import './search.css';
 
 export default class Search extends Component {
   static propTypes = {
@@ -27,7 +28,9 @@ export default class Search extends Component {
           </form>
         </div>
         <div className="col-xs-12 col-sm-8">
-          <button type="button" className="btn btn-default pull-right">Add Post</button>
+          <Link to="/post/new">
+            <button type="button" className="btn btn-default pull-right">Add Post</button>
+          </Link>
         </div>
       </div>
     );
