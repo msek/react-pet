@@ -1,22 +1,21 @@
 import { POSTS } from '../actionTypes';
 import Config from '../../config/Config';
 
-export function requestPosts() {
+function requestPosts() {
   return {
     type: POSTS.POSTS_REQUEST
   };
 }
 
-export function requestUsers() {
+function requestUsers() {
   return {
     type: POSTS.USERS_REQUEST
   };
 }
 
-export function fetchComments(comments) {
+function requestComments() {
   return {
-    type: POSTS.COMMENTS_GET,
-    comments
+    type: POSTS.COMMENTS_REQUEST
   };
 }
 
@@ -47,5 +46,34 @@ export const fetchUsers = () => {
     return fetch(`${Config.serverUrl}/users`)
       .then(response => response.json())
       .then(json => dispatch(receiveUsers(json)));
+  };
+};
+
+const receiveComments = (data) => ({
+    type: POSTS.COMMENTS_RECEIVE,
+    data
+});
+
+export const fetchComments = () => {
+  return dispatch => {
+    dispatch(requestComments());
+
+    return fetch(`${Config.serverUrl}/comments`)
+      .then(response => response.json())
+      .then(json => dispatch(receiveComments(json)));
+  };
+};
+
+export const savePost = (post) => {
+  return dispatch => {
+    return fetch(`${Config.serverUrl}/comments`, { method: 'POST', post: post })
+      .then(savedPost => savedPost.id ? console.log('success') : console.log('fail'));
+  };
+};
+
+export const deletePost = postId => {
+  return {
+    type: 'POST_DELETE',
+    id: postId
   };
 };

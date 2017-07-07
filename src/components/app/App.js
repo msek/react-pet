@@ -5,22 +5,10 @@ import {Route, Switch, BrowserRouter as Router} from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import HomePage from '../homepage/HomePage';
+import LoginPage from '../loginpage/LoginPage';
 import PostEditPage from '../posteditpage/PostEditPage';
 // import _ from 'lodash';
 import './app.css';
-
-
-const mapStateToProps = state => {
-  return {
-    state
-  };
-};
-//
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     fetchPosts: () => fetchPosts(dispatch)
-//   };
-// };
 
 class App extends Component {
   static propTypes = {
@@ -82,11 +70,25 @@ class App extends Component {
               <PostEditPage getPost={this.getPost}
                             updatePost={this.updatePost}
                             {...props} />} />
+
+            <Route exact path="/login" render={() => <LoginPage />} />
           </Switch>
         </div>
       </Router>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    state
+  };
+};
+//
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     fetchPosts: () => fetchPosts(dispatch)
+//   };
+// };
 
 export default connect(mapStateToProps)(App);

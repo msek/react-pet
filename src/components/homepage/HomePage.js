@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-// import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Search from '../search/Search';
 import PostList from '../postlist/PostList';
 import Header from '../header/Header';
@@ -8,9 +9,9 @@ import _ from 'lodash';
 import 'whatwg-fetch';
 import './homepage.css';
 
-export default class HomePage extends Component {
+class HomePage extends Component {
   static propTypes = {
-
+    posts: PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -46,9 +47,17 @@ export default class HomePage extends Component {
       <div>
         <Header title="React Pet Project" />
         <Search onFilterTextInput={this.handleFilterTextInput} filterText={this.state.filterText} />
-        <PostList />
+        <PostList posts={this.state.filteredPosts} />
         <Footer />
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts.posts
+  };
+};
+
+export default connect(mapStateToProps)(HomePage);

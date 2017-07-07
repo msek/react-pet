@@ -6,41 +6,25 @@ import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import RadioList from '../radiolist/RadioList';
 import Comment from '../comment/Comment';
+import _ from 'lodash';
 import './posteditpage.css';
 
 class PostEditPage extends Component {
   static propTypes = {
-    match: PropTypes.array
+    post: PropTypes.object
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      post: {
-        id: Number(this.props.match.params.postId) || -1,
-        title: '',
-        body: '',
-        userId: -1
-      },
-      comments: [],
-      postId: Number(this.props.match.params.postId) || -1,
+      post: Object.assign({}, props.post),
+      postId: props.post.id,
       redirect: false
     };
   }
 
   componentDidMount() {
-    this.state.postId !== -1 && this.fetchPostAndComments(this.state.postId);
   }
-
-  fetchPostAndComments = (postId) => {
-    let post = this.props.getPost(postId);
-    if(post.length === 0) {
-      this.setState({ redirect: true });
-    } else {
-      this.setState({ post : post[0] });
-      // get comments for post
-    }
-  };
 
   handleFormSubmit = (e) => {
     e.preventDefault();
@@ -70,7 +54,7 @@ class PostEditPage extends Component {
 
     return (
       <div>
-        <Header title="React Pet Project" postId={this.state.postId} postTitle={this.state.post.title} />
+        <Header title="React Pet Project" postId={this.props.post.id} postTitle={this.state.post.title} />
         <div className="row">
           <div className="col-xs-12">
             <h3>
@@ -81,13 +65,13 @@ class PostEditPage extends Component {
                 <input type="text"
                        className="form-control"
                        onChange={this.handlePostTitleChange}
-                       value={this.props.state.posts[this.state.postId].title} />
+                       value={this.state.post.title} />
               </div>
               <div className="form-group">
                 <textarea className="form-control"
                           rows="6"
                           onChange={this.handlePostBodyChange}
-                          value={this.props.state.posts[this.state.postId].body} />
+                          value={this.state.post.body} />
               </div>
 
               <RadioList options={this.props.state.users}
@@ -107,7 +91,7 @@ class PostEditPage extends Component {
         <div className="row">
           <div className="col-xs-12">
             <h3>Comments</h3>
-            {this.state.comments.map(comment =>
+            {this.props.comments.map(comment =>
               <Comment key={comment.id} name={comment.name} body={comment.body} />
             )}
           </div>
@@ -118,16 +102,29 @@ class PostEditPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const getPostById = (postId) => {
-    return state.posts.posts.filter(obj => {
-      return obj.id === Number(postId);
-    });
+const mapStateToProps = (state, props) => {
+  let post = {
+    id: -1,
+    userId: '',
+    title: '',
+    body: ''
   };
+  let comments = [];
+
+  if (_.has(props, 'match.params.postId')) {
+    const postId = props.match.params.postId;
+
+    const getPostById = (postId) => state.posts.posts.filter(obj => obj.id === Number(postId));
+    post = getPostById(postId)[0];
+
+    const getCommentsByPostId = (postId) => state.posts.comments.filter(obj => obj.postId === Number(postId));
+    comments = getCommentsByPostId(postId);
+  }
 
   return {
     state: state.posts,
-    post: getPostById(2)
+    post,
+    comments
   };
 };
 
