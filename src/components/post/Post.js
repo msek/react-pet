@@ -10,7 +10,8 @@ class Post extends Component {
   static propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    body: PropTypes.string.isRequired
+    body: PropTypes.string.isRequired,
+    deletePost: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -21,14 +22,14 @@ class Post extends Component {
     };
   }
 
-  togglePostDeleteModal = () => {
+  __togglePostDeleteModal = () => {
     this.setState({
       modalOpen: !this.state.modalOpen
     });
   };
 
-  deletePost = () => {
-    this.togglePostDeleteModal();
+  __deletePost = () => {
+    this.__togglePostDeleteModal();
     this.props.deletePost(this.props.id);
   };
 
@@ -48,15 +49,15 @@ class Post extends Component {
                 </button>
               </Link>
               <button type="button" className="btn btn-default btn-post-list"
-                      onClick={this.togglePostDeleteModal}>
+                      onClick={this.__togglePostDeleteModal}>
                 Delete
               </button>
             </div>
           </div>
         </div>
 
-        <PostDeleteModal show={this.state.modalOpen} confirmDelete={this.deletePost}
-                         closeModal={this.togglePostDeleteModal} />
+        <PostDeleteModal show={this.state.modalOpen} confirmDelete={this.__deletePost}
+                         closeModal={this.__togglePostDeleteModal} />
       </div>
     );
   }

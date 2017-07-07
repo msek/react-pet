@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Post from '../post/Post';
 import 'whatwg-fetch';
 import './postlist.css';

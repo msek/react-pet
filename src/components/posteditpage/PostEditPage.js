@@ -12,7 +12,10 @@ import './posteditpage.css';
 
 class PostEditPage extends Component {
   static propTypes = {
-    post: PropTypes.object
+    post: PropTypes.object,
+    comments: PropTypes.array,
+    users: PropTypes.array,
+    savePost: PropTypes.func
   };
 
   constructor(props) {
@@ -27,23 +30,23 @@ class PostEditPage extends Component {
   componentDidMount() {
   }
 
-  handleFormSubmit = (e) => {
+  __handleFormSubmit = (e) => {
     e.preventDefault();
     this.props.savePost(this.state.post);
     this.setState({ redirect: true });
   };
 
-  handleAuthorChange = (e) => {
+  __handleAuthorChange = (e) => {
     let post = Object.assign({}, this.state.post, {userId: Number(e.target.value)});
     this.setState({ post });
   };
 
-  handlePostTitleChange = (e) => {
+  __handlePostTitleChange = (e) => {
     let post = Object.assign({}, this.state.post, {title: e.target.value});
     this.setState({ post });
   };
 
-  handlePostBodyChange = (e) => {
+  __handlePostBodyChange = (e) => {
     let post = Object.assign({}, this.state.post, {body: e.target.value});
     this.setState({ post });
   };
@@ -61,23 +64,23 @@ class PostEditPage extends Component {
             <h3>
               {this.state.postId === -1 ? `Create New Post` : `Edit Post #` + this.state.postId}
             </h3>
-            <form onSubmit={this.handleFormSubmit}>
+            <form onSubmit={this.__handleFormSubmit}>
               <div className="form-group">
                 <input type="text"
                        className="form-control"
-                       onChange={this.handlePostTitleChange}
+                       onChange={this.__handlePostTitleChange}
                        value={this.state.post.title} />
               </div>
               <div className="form-group">
                 <textarea className="form-control"
                           rows="6"
-                          onChange={this.handlePostBodyChange}
+                          onChange={this.__handlePostBodyChange}
                           value={this.state.post.body} />
               </div>
 
-              <RadioList options={this.props.state.users}
+              <RadioList options={this.props.users}
                          selectedOption={this.state.post.userId}
-                         submitOption={this.handleAuthorChange} />
+                         submitOption={this.__handleAuthorChange} />
 
               <button disabled={this.state.post.title === '' ||
                                  this.state.post.body === '' ||
@@ -123,9 +126,9 @@ const mapStateToProps = (state, props) => {
   }
 
   return {
-    state: state.posts,
     post,
-    comments
+    comments,
+    users: state.users
   };
 };
 
