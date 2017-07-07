@@ -34,6 +34,33 @@ export const fetchPosts = () => {
   };
 };
 
+const updatePost = post => ({
+  type: POSTS.POST_UPDATE,
+  post: post
+});
+
+const createPost = post => ({
+  type: POSTS.POST_CREATE,
+  post: post
+});
+
+export const savePost = (post) => {
+  return dispatch => {
+    if (post.id >= 0) {
+      return dispatch(updatePost(post));
+    }
+    post = {...post, id: 202};
+    return dispatch(createPost(post));
+    // return fetch(`${Config.serverUrl}/comments`, { method: 'POST', post: post })
+    //   .then(savedPost => savedPost.id ? console.log('success') : console.log('fail'));
+  };
+};
+
+export const deletePost = postId => ({
+  type: POSTS.POST_DELETE,
+  id: postId
+});
+
 const receiveUsers = (data) => ({
     type: POSTS.USERS_RECEIVE,
     data
@@ -49,7 +76,7 @@ export const fetchUsers = () => {
   };
 };
 
-const receiveComments = (data) => ({
+export const receiveComments = (data) => ({
     type: POSTS.COMMENTS_RECEIVE,
     data
 });
@@ -61,19 +88,5 @@ export const fetchComments = () => {
     return fetch(`${Config.serverUrl}/comments`)
       .then(response => response.json())
       .then(json => dispatch(receiveComments(json)));
-  };
-};
-
-export const savePost = (post) => {
-  return dispatch => {
-    return fetch(`${Config.serverUrl}/comments`, { method: 'POST', post: post })
-      .then(savedPost => savedPost.id ? console.log('success') : console.log('fail'));
-  };
-};
-
-export const deletePost = postId => {
-  return {
-    type: 'POST_DELETE',
-    id: postId
   };
 };

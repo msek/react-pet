@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
+import { deletePost } from '../../actions/posts/actionCreators';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import PostDeleteModal from '../postdeletemodal/PostDeleteModal';
@@ -60,4 +62,18 @@ class Post extends Component {
   }
 }
 
-export default Post;
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts.posts
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    deletePost: id => {
+      dispatch(deletePost(id));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

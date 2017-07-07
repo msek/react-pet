@@ -16,8 +16,14 @@ export default function posts(state = initialState, action) {
     case POSTS.POSTS_RECEIVE:
       return { ...state, isFetching: false, posts: action.data };
 
+    case POSTS.POST_CREATE:
+      return { ...state, posts: [{...action.post, id: state.posts.length}, ...state.posts] };
+
+    case POSTS.POST_UPDATE:
+      return { ...state, posts: [action.post, ...state.posts.filter(post => post.id !== action.post.id)] };
+
     case POSTS.POST_DELETE:
-      return { ...state, posts: action.data };
+      return { ...state, posts: state.posts.filter(({id}) => id !== action.id)};
 
     case POSTS.USERS_REQUEST:
       return { ...state, isFetching: true };

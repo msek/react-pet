@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
+import { savePost } from '../../actions/posts/actionCreators';
 import PropTypes from 'prop-types';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
@@ -28,7 +29,7 @@ class PostEditPage extends Component {
 
   handleFormSubmit = (e) => {
     e.preventDefault();
-    this.props.updatePost(this.state.post);
+    this.props.savePost(this.state.post);
     this.setState({ redirect: true });
   };
 
@@ -128,4 +129,12 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps)(PostEditPage);
+const mapDispatchToProps = dispatch => {
+  return {
+    savePost: post => {
+      dispatch(savePost(post));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostEditPage);
