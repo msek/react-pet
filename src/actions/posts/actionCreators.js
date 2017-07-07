@@ -54,8 +54,8 @@ export const deletePost = postId => ({
 });
 
 const receiveUsers = (data) => ({
-    type: POSTS.USERS_RECEIVE,
-    data
+  type: POSTS.USERS_RECEIVE,
+  data
 });
 
 export const fetchUsers = () => {
